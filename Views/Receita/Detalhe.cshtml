@@ -1,0 +1,84 @@
+﻿@using ReceitasMaster.Models;
+@model Receita;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mySheet.css" />
+    <title>Detalhe da Receita - ReceitasMaster</title>
+</head>
+<body>
+    <h1>🍳 Detalhe da Receita</h1>
+
+    <div class="card">
+        <table class="detail-table">
+            <tr>
+                <td><strong>Título:</strong></td>
+                <td>@Model.Titulo</td>
+            </tr>
+            <tr>
+                <td><strong>Descrição:</strong></td>
+                <td>@Model.Descricao</td>
+            </tr>
+            <tr>
+                <td><strong>Tempo de Preparo:</strong></td>
+                <td>@Model.TempoPreparo minutos</td>
+            </tr>
+            <tr>
+                <td><strong>Porções:</strong></td>
+                <td>@Model.Porcoes</td>
+            </tr>
+            <tr>
+                <td><strong>Nível de Dificuldade:</strong></td>
+                <td>
+                    @switch (Model.NivelDificuldade) {
+                        case Receita.Dificuldade.Facil:
+                            <span class="badge badge-green">Fácil</span>
+                            break;
+                        case Receita.Dificuldade.Media:
+                            <span class="badge badge-yellow">Média</span>
+                            break;
+                        case Receita.Dificuldade.Dificil:
+                            <span class="badge badge-red">Difícil</span>
+                            break;
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Ativa:</strong></td>
+                <td>
+                    @if (Model.Ativa) {
+                        <span class="badge badge-green">Sim</span>
+                    }
+                    else {
+                        <span class="badge badge-red">Não</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Data de Criação:</strong></td>
+                <td>@Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>📝 Instruções</h3>
+        <div class="instructions">
+            @Html.Raw(Model.Instrucoes.Replace("\n", "<br/>"))
+        </div>
+    </div>
+
+    <div class="card navigation">
+        <a href="/Receita/Index" class="btn btn-primary">🏠 Voltar à Lista</a>
+        @if (ViewBag.Conta.NivelAcesso > 0) {
+            <a href="/Receita/Editar/@Model.GuidReceita" class="btn btn-secondary">✏️ Editar</a>
+        }
+    </div>
+</body>
+</html>
