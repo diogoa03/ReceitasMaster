@@ -1,0 +1,54 @@
+﻿@using ReceitasMaster.Models;
+@model Receita;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mySheet.css" />
+    <title>Editar Receita - ReceitasMaster</title>
+</head>
+<body>
+    <h1>🍳 Editar Receita</h1>
+
+    <div class="card">
+        <form method="post" action="/Receita/Editar/@Model.GuidReceita">
+            <input type="hidden" name="GuidReceita" value="@Model.GuidReceita" />
+
+            <table class="form-table">
+                <tr>
+                    <td><label for="titulo">Título:</label></td>
+                    <td><input type="text" id="titulo" name="Titulo" value="@Model.Titulo" required /></td>
+                </tr>
+                <tr>
+                    <td><label for="descricao">Descrição:</label></td>
+                    <td><textarea id="descricao" name="Descricao" rows="3" required>@Model.Descricao</textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="instrucoes">Instruções:</label></td>
+                    <td><textarea id="instrucoes" name="Instrucoes" rows="6" required>@Model.Instrucoes</textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="ativa">Ativa:</label></td>
+                    <td>
+                        <select id="ativa" name="Ativa">
+                            <option value="true" @(Model.Ativa ? "selected" : "")>Sim</option>
+                            <option value="false" @(!Model.Ativa ? "selected" : "")>Não</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="form-buttons">
+                        <button type="submit" class="btn btn-primary">✅ Atualizar Receita</button>
+                        <a href="/Receita/Index" class="btn btn-secondary">❌ Cancelar</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

@@ -8,6 +8,7 @@
     --green: #2ecc71;
     --red: #e74c3c;
     --yellow: #f39c12;
+    --blue: #3498db;
     --border-radius: 10px;
 }
 
@@ -31,7 +32,7 @@ h1 {
     color: var(--primary-dark);
 }
 
-h3 {
+h2, h3 {
     font-size: 20px;
     margin-bottom: 15px;
     color: var(--primary-dark);
@@ -230,6 +231,33 @@ label {
         text-decoration: none;
     }
 
+.btn-small {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.btn-success {
+    background-color: var(--green);
+    color: white;
+}
+
+    .btn-success:hover {
+        background-color: #27ae60;
+        color: white;
+        text-decoration: none;
+    }
+
+.btn-danger {
+    background-color: var(--red);
+    color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+        color: white;
+        text-decoration: none;
+    }
+
 button[type="submit"] {
     width: 100%;
 }
@@ -265,6 +293,15 @@ button[type="submit"] {
     background-color: var(--yellow);
 }
 
+.badge-blue {
+    background-color: var(--blue);
+}
+
+.badge-gray {
+    background-color: var(--gray);
+    color: var(--text);
+}
+
 /* Resumo */
 .summary {
     margin-top: 20px;
@@ -298,7 +335,7 @@ button[type="submit"] {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Instruções */
+/* Instruções e ingredientes */
 .instructions {
     background-color: #f8f9fa;
     padding: 20px;
