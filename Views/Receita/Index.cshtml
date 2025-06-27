@@ -1,0 +1,127 @@
+﻿@using ReceitasMaster.Models
+@model IEnumerable<Receita>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mySheet.css" />
+    <title>ReceitasMaster</title>
+</head>
+<body>
+
+    <h1>🍳 ReceitasMaster</h1>
+
+    <div class="card">
+        @if (ViewBag.Conta.NivelAcesso > 0) {
+            <p>✅ <a href="/Receita/Criar">Criar Nova Receita</a></p>
+            <p>🚪 <a href="/Conta/Logout">Terminar Sessão</a></p>
+
+            <!-- Links de filtro apenas para utilizadores autenticados -->
+            <p>📄 <a href="/Receita/Index/1">Ver Receitas Ativas</a></p>
+            <p>📦 <a href="/Receita/Index/0">Ver Receitas Inativas</a></p>
+            <p>📚 <a href="/Receita/Index/2">Ver Todas as Receitas</a></p>
+        }
+        else {
+            <p>⚠️ Não estás autenticado. Algumas opções estão bloqueadas.</p>
+            <p>🔐 <a href="/Conta/Login">Iniciar Sessão</a></p>
+
+            <!-- Visitantes veem apenas receitas ativas (sem links de filtro) -->
+            <p>📄 A visualizar apenas receitas ativas</p>
+        }
+    </div>
+
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Categoria</th>
+            <th class="center">Tempo Preparo</th>
+            <th class="center">Classificação</th>
+            @if (ViewBag.Conta.NivelAcesso > 0) {
+                <th class="center">Ativa</th>
+            }
+            <th class="center">Data Criação</th>
+            <th class="center">Operações</th>
+        </tr>
+        @foreach (var item in Model) {
+            <tr>
+                <td>@item.Titulo</td>
+                <td>@item.Categoria</td>
+                <td class="center">@item.TempoPreparo min</td>
+                <td class="center">
+                    @if (item.TempoPreparo < 30) {
+                        <span class="badge badge-green">⚡ Rápida</span>
+                    }
+                    else {
+                        <span class="badge badge-yellow">🕐 Demorada</span>
+                    }
+                </td>
+                @if (ViewBag.Conta.NivelAcesso > 0) {
+                    <td class="center">
+                        @if (item.Ativa) {
+                            <span class="badge badge-green">Sim</span>
+                        }
+                        else {
+                            <span class="badge badge-red">Não</span>
+                        }
+                    </td>
+                }
+                <td class="center">@item.DataCriacao.ToString("dd/MM/yyyy")</td>
+                <td class="center">
+                    <a href="/Receita/Detalhe/@item.GuidReceita">Detalhe</a>
+                    @if (ViewBag.Conta.NivelAcesso > 0) {
+                        @: | <a href="/Receita/Editar/@item.GuidReceita">Editar</a>
+                    }
+                    @if (ViewBag.Conta.NivelAcesso == 2) {
+                        @: | <a href="/Receita/Eliminar/@item.GuidReceita">Eliminar</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="summary">
+        <table class="summary-table">
+            @if (ViewBag.Conta.NivelAcesso > 0) {
+                <!-- Utilizadores autenticados veem todos os números -->
+                <tr>
+                    <td>Total de Receitas:</td>
+                    <td>@ViewBag.TotalReceitas</td>
+                </tr>
+                <tr>
+                    <td>Receitas Ativas:</td>
+                    <td>@ViewBag.ReceitasAtivas</td>
+                </tr>
+                <tr>
+                    <td>Receitas Inativas:</td>
+                    <td>@ViewBag.ReceitasInativas</td>
+                </tr>
+            }
+            else {
+                <!-- Visitantes veem apenas estatísticas de receitas ativas -->
+                <tr>
+                    <td>Receitas Disponíveis:</td>
+                    <td>@ViewBag.ReceitasAtivas</td>
+                </tr>
+            }
+            <tr>
+                <td>Receitas Rápidas (&lt;30min):</td>
+                <td>@ViewBag.ReceitasRapidas</td>
+            </tr>
+            <tr>
+                <td>Receitas Demoradas (≥30min):</td>
+                <td>@ViewBag.ReceitasDemoradas</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="user-info">
+        👤 Utilizador: @ViewBag.Conta.Nome &nbsp; | &nbsp; ✉️ Contacto: @ViewBag.Conta.Email
+    </div>
+
+</body>
+</html>
