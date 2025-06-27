@@ -1,0 +1,86 @@
+﻿@using ReceitasMaster.Models
+@model IEnumerable<Receita>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mySheet.css" />
+    <title>ReceitasMaster</title>
+</head>
+<body>
+
+    <h1>🍳 ReceitasMaster</h1>
+
+    <div class="card">
+        @if (ViewBag.Conta.NivelAcesso > 0) {
+            <p>✅ <a href="/Receita/Criar">Criar Nova Receita</a></p>
+            <p>🚪 <a href="/Conta/Logout">Terminar Sessão</a></p>
+        }
+        else {
+            <p>⚠️ Não estás autenticado. Algumas opções estão bloqueadas.</p>
+            <p>🔐 <a href="/Conta/Login">Iniciar Sessão</a></p>
+        }
+
+        <p>📄 <a href="/Receita/Index/1">Ver Receitas Ativas</a></p>
+        <p>📦 <a href="/Receita/Index/0">Ver Receitas Inativas</a></p>
+        <p>📚 <a href="/Receita/Index/2">Ver Todas as Receitas</a></p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th class="center">Ativa</th>
+            <th class="center">Data Criação</th>
+            <th class="center">Operações</th>
+        </tr>
+        @foreach (var item in Model) {
+            <tr>
+                <td>@item.Titulo</td>
+                <td>@item.Descricao</td>
+                <td class="center">
+                    @if (item.Ativa) {
+                        <span class="badge badge-green">Sim</span>
+                    }
+                    else {
+                        <span class="badge badge-red">Não</span>
+                    }
+                </td>
+                <td class="center">@item.DataCriacao.ToString("dd/MM/yyyy")</td>
+                <td class="center">
+                    <a href="/Receita/Detalhe/@item.GuidReceita">Detalhe</a>
+                    @if (ViewBag.Conta.NivelAcesso > 0) {
+                        @: | <a href="/Receita/Editar/@item.GuidReceita">Editar</a>
+                    }
+                    @if (ViewBag.Conta.NivelAcesso == 2) {
+                        @: | <a href="/Receita/Eliminar/@item.GuidReceita">Eliminar</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="summary">
+        <table class="summary-table">
+            <tr>
+                <td>Total de Receitas:</td>
+                <td>@ViewBag.TotalReceitas</td>
+            </tr>
+            <tr>
+                <td>Receitas Ativas:</td>
+                <td>@ViewBag.ReceitasAtivas</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="user-info">
+        👤 Utilizador: @ViewBag.Conta.Nome &nbsp; | &nbsp; ✉️ Contacto: @ViewBag.Conta.Email
+    </div>
+
+</body>
+</html>
